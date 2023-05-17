@@ -1,0 +1,1410 @@
+{% set utm_term = request.query_dict.utm_term %}
+{% set utm_source = request.query_dict.utm_source %}
+{% set utm_medium = request.query_dict.utm_medium %}
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=0"/>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<div class="sleep-assesment-outer" style="background-image:url({{ module.background_image.src }});">
+  <div class="page-center-750">
+    <div class="logo-column-outer">
+      <div class="logo-column">
+        <div class="logo-section-left">
+          {% set row = hubdb_table_rows(module.select_hubdb_table) %}
+          {% for rows in row %}
+
+          {% if rows.partner_name == utm_term %}
+          {% if rows.partner_logo.url %}
+          <div class="logo-top-new">
+            <a href="{{rows.partner_logo_link}}" target="_blank">
+              <img src="{{rows.partner_logo.url}}" class="hs-image-widget " style="border-width:0px;border:0px;" alt="logo-resmed-color" title="logo-resmed-color">
+            </a>
+            {#<span>Sleep Apnea Assessment</span>#}
+          </div> 
+          {#{% else %}
+        <div class="logoRightNoPartner logo-top-new">
+          <span>Sleep Apnea Assessment</span>
+        </div>#}
+          {% endif %}
+          {% endif %}
+          {% endfor %}
+        </div>
+
+        <div class="logo-section-right">
+          <div class="logo-on-left">
+
+            {% for rows in row %}
+            {% if rows.partner_name == utm_term %}
+            <div class="logoRightPartner {% if rows.partner_name %} namePresent {% else %} nameNotPresent {% endif %} {% if rows.partner_logo %} logoPresent {% else %} logoNotPresent {% endif %}">
+              <div class="namePresent"> 
+                {% if module.logo_with_partner.src %}
+                {% set sizeAttrs = 'width="{{ module.logo_with_partner.width }}" height="{{ module.logo_with_partner.height }}"' %}
+                {% if module.logo_with_partner.size_type == 'auto' %}
+                {% set sizeAttrs = 'width="{{ module.logo_with_partner.width }}" height="{{ module.logo_with_partner.height }}" style="max-width: 100%; height: auto;"' %}
+                {% elif module.logo_with_partner.size_type == 'auto_custom_max' %}
+                {% set sizeAttrs = 'width="{{ module.logo_with_partner.max_width }}" height="{{ module.logo_with_partner.max_height }}" style="max-width: 100%; height: auto;"' %}
+                {% endif %}
+                {% set loadingAttr = module.logo_with_partner.loading != 'disabled' ? 'loading="{{ module.logo_with_partner.loading }}"' : '' %}
+                <img src="{{ module.logo_with_partner.src }}" alt="{{ module.logo_with_partner.alt }}" {{ loadingAttr }} {{ sizeAttrs }}>
+                {% endif %}
+              </div>
+              <div class="logoWithoutPartner">
+                {% if module.logo_without_partner_logo.src %}
+                {% set sizeAttrs = 'width="{{ module.logo_without_partner_logo.width }}" height="{{ module.logo_without_partner_logo.height }}"' %}
+                {% if module.logo_without_partner_logo.size_type == 'auto' %}
+                {% set sizeAttrs = 'width="{{ module.logo_without_partner_logo.width }}" height="{{ module.logo_without_partner_logo.height }}" style="max-width: 100%; height: auto;"' %}
+                {% elif module.logo_without_partner_logo.size_type == 'auto_custom_max' %}
+                {% set sizeAttrs = 'width="{{ module.logo_without_partner_logo.max_width }}" height="{{ module.logo_without_partner_logo.max_height }}" style="max-width: 100%; height: auto;"' %}
+                {% endif %}
+                {% set loadingAttr = module.logo_without_partner_logo.loading != 'disabled' ? 'loading="{{ module.logo_without_partner_logo.loading }}"' : '' %}
+                <img src="{{ module.logo_without_partner_logo.src }}" alt="{{ module.logo_without_partner_logo.alt }}" {{ loadingAttr }} {{ sizeAttrs }}>
+                {% endif %}
+              </div>
+            </div>
+            {% else %}
+            <div class="logoRightNoPartner">
+              {% if module.logo_without_partner.src %}
+              {% set sizeAttrs = 'width="{{ module.logo_without_partner.width }}" height="{{ module.logo_without_partner.height }}"' %}
+              {% if module.logo_without_partner.size_type == 'auto' %}
+              {% set sizeAttrs = 'width="{{ module.logo_without_partner.width }}" height="{{ module.logo_without_partner.height }}" style="max-width: 100%; height: auto;"' %}
+              {% elif module.logo_without_partner.size_type == 'auto_custom_max' %}
+              {% set sizeAttrs = 'width="{{ module.logo_without_partner.max_width }}" height="{{ module.logo_without_partner.max_height }}" style="max-width: 100%; height: auto;"' %}
+              {% endif %}
+              {% set loadingAttr = module.logo_without_partner.loading != 'disabled' ? 'loading="{{ module.logo_without_partner.loading }}"' : '' %}
+              <img src="{{ module.logo_without_partner.src }}" alt="{{ module.logo_without_partner.alt }}" {{ loadingAttr }} {{ sizeAttrs }}>
+              {% endif %}
+            </div>
+            {% endif %}
+
+            {% set ttt = rows.partner_name %}
+            {% set withoutLogo = rows.partner_logo %}
+
+            {% require_css %}
+            <style>
+              {% if ttt == utm_term %}
+              .logoRightNoPartner {
+                display: none; 
+              }
+              .logoRightNoPartner:first-child {
+                display: none;
+              }
+              {% endif %}
+              {% if ttt != utm_term %}
+              .logoRightNoPartner:first-child {
+                display: block;
+              }
+              .logoRightNoPartner {
+                display: none; 
+              }
+              {% endif %}
+
+              .logoRightPartner.namePresent.logoPresent .logoWithoutPartner,
+              .logoRightPartner.namePresent.logoNotPresent .namePresent{
+                display: none;
+              }
+            </style>
+            {% end_require_css %}
+
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+
+      {#{% for rows in row %}
+      {% if rows.partner_name == utm_term %}
+      <div class="display-on-mobile">
+        <span>Sleep Apnea Assessment</span>
+      </div>
+      {% endif %}
+      {% endfor %}#}
+    </div><!--logo-column-outer -->
+
+    <div class="sleep-assi">
+      <div class="display-on-mobile">
+        <span>Sleep Apnea Assessment</span>
+      </div>
+    </div>
+
+    <div class="sleep-assesment-outer0">
+      <div class="sleep-steps sleep-step0">
+        <div aria-hidden="true" class="bg-circle__wrapper">
+          <div class="bg-circle"></div>
+        </div>
+
+        <div class="sleep-steps-inner">
+          <div class="sleep-steps-inner0">
+            <div class="content-layer">
+              <div class="inner-content-layer">
+                <h2>Get your results in less than <span>1</span> minute</h2>
+                <p>The outcome of this screening assessment is to help you determine if you need a medical diagnosis such as a Home Sleep Test (HST), a clinical Polysomnography (PSG) or to seek medical advice from your doctor.</p>
+              </div>
+            </div>
+
+            <div class="below-content">
+              <div class="inner-below-content">
+                <label>
+                  <input type="checkbox" id="content" name="content">
+                  <span class="label-checkbox-content">
+                    Please send me ResMed special offers and newsworthy updates. I can easily unsubscribe at any time. 
+                    <a class="privacy_asses" href="#1" target="_blank">Learn more</a> 
+                  </span>
+                </label>
+
+                <div class="popup-outer-wrp">
+                  <div class="popup_back"></div>
+                  <div class="popup_contain">
+                    <div class="popup_close">
+                      <i class="far fa-times-circle"></i>
+                    </div>
+                    <div class="popup-content-col">
+                      {{ module.popup_content }}
+                    </div>
+                  </div>
+                </div>
+
+                <!--<p>
+<lable>
+<input type="checkbox" id="terms" name="terms" checked="checked">
+<span>
+Please send me ResMed special offers and newsworthy updates. I can easily unsubscribe at any time.*
+</span>
+</lable>
+</p> -->
+              </div>
+            </div>
+
+            <div class="proceed_btn">
+              <a href="#1" id="proceed_btn">Let's begin 
+                <svg xmlns="http://www.w3.org/2000/svg" width="10.658" height="11.842" viewBox="0 0 10.658 11.842">
+                  <g id="right_arrow" data-name="right arrow" transform="translate(-2.369 -1.579)">
+                    <path id="Path_1162" data-name="Path 1162" d="M12.737,8.216,7.958,13.16a.816.816,0,0,1-1.2,0,.924.924,0,0,1,0-1.259l3.293-3.466h-6.8a.936.936,0,0,1,0-1.87h6.8L6.762,3.1a.924.924,0,0,1,0-1.259.816.816,0,0,1,1.2,0L12.7,6.755a.879.879,0,0,1,.076.071,1.041,1.041,0,0,1,0,1.348Z" fill="#fff"/>
+                  </g>
+                </svg>
+              </a>
+            </div>
+
+            <div class="below-btn-content">
+              <div class="inner-btn-content">
+                {{ module.content_below_button }}
+                {# <p>
+                By starting the Online Sleep Assessment, ResMed’s 
+                <a href="/terms-of-use" target="_blank">Terms of use</a> will apply. We will collect and use your personal and health information to provide you with the Online Sleep Assessment results. For more information, please refer to our <a href="/privacy-notice" target="_blank">Privacy Policy</a>.
+                </p> 
+                <p>
+                * ResMed will use your information in accordance with our <a href="#">Privacy Policy</a>. ResMed will aim to send relevant offers and updates which may be based on ResMed’s understanding of my circumstances and interests. As a result of your consent, ResMed group companies may contact you with promotional communications via email and text messages. To be able to tailor the communications to your preferences and behaviour and provide you with a personalised experience, we may analyse and combine your personal data based on data you give us and data we get from your interactions and usage of our digital channels, such as social media, websites, emails, apps and connected products. You can withdraw your consent at any time. For more information, please read our <a href="#">Privacy Policy</a>.
+              </p>--->#}
+              </div>
+            </div>
+          </div>  
+        </div>
+      </div>
+
+      <div class="sleep-assesment-outer1">
+        {#<div class="sleep-steps sleep-step1">
+        <div class="sleep-steps-inner"><div class="sleep-steps-inner1">
+          <h2>Clinically proven results in less than <span>1</span> minute</h2>
+          <p>The outcome of this screening assessment is to help you determine if you need a medical diagnosis such as a Home Sleep Test (HST), a clinical Polysomnography (PSG) or to seek medical advice from your doctor. The NoSAS Screening is recommended once every year starting at age 21.</p>
+          <a href="#1">Let's begin</a>
+        </div>  </div>
+
+        <div class="footer-asses">   
+              <p>Reference: <br>Marti-Soler et al. The NoSAS score for screening of sleep-disordered breathing: a derivation and validation study. The Lancet, Respiratory Medicine (9) 2016 <br>: J Haba-Rubio: <a href="https://www.centre-sommeil.ch/">https://www.centre-sommeil.ch/</a> R. Heinzer: <a href="https://www.chuv.ch/fr/sommeil/cirs-home/le-centre-en-bref/nos-collaborateurs/prof-raphael-heinzer/">https://www.chuv.ch/fr/sommeil/cirs-home/le-centre-en-bref/nos-collaborateurs/prof-raphael-heinzer/</a></p>
+         </div>
+      </div>#}
+
+        <div class="sleep-steps step-inner-space sleep-step2">
+          <div class="sleep-steps-inner">
+            <div class="sleep-steps-inner1">
+              <h2>Please introduce yourself</h2>
+              <div class="row-fluid ">
+                <div class="span10">
+                  <label>Surname <svg xmlns="http://www.w3.org/2000/svg" width="7" height="8" viewBox="0 0 7 8" fill="none"> <path d="M1.00781 6.46875L2.57812 4.3125L0.21875 3.60938L0.585938 2.4375L2.94531 3.30469L2.875 0.617188H4.0625L3.98438 3.35156L6.3125 2.48438L6.67188 3.67969L4.27344 4.39062L5.8125 6.50781L4.84375 7.23438L3.39844 4.98438L1.98438 7.17969L1.00781 6.46875Z" fill="#9D2872"/> </svg></label>
+                  <input type="text" class="input-box surname">
+                </div>
+
+                <div class="span10">
+                  <label>Given name  <svg xmlns="http://www.w3.org/2000/svg" width="7" height="8" viewBox="0 0 7 8" fill="none"> <path d="M1.00781 6.46875L2.57812 4.3125L0.21875 3.60938L0.585938 2.4375L2.94531 3.30469L2.875 0.617188H4.0625L3.98438 3.35156L6.3125 2.48438L6.67188 3.67969L4.27344 4.39062L5.8125 6.50781L4.84375 7.23438L3.39844 4.98438L1.98438 7.17969L1.00781 6.46875Z" fill="#9D2872"/> </svg></label>   
+                  <input type="text" class="input-box firstname"> 
+                </div>
+              </div>
+
+              <div class="next-button-outer">
+                <button class="next-button sleep-step2-next">Next</button>
+              </div>
+            </div>
+          </div>
+          <div class="pagination">
+            <span class="active">01</span> <span></span> <span></span> <span></span> <span></span>  <span></span> <span></span>
+          </div>
+        </div>
+
+        <div class="sleep-steps step-inner-space sleep-step3">
+          <div aria-hidden="true" class="bg-circle__wrapper">
+            <div class="bg-circle"></div>
+          </div>
+          <div class="sleep-steps-inner">
+            <div class="sleep-steps-inner1">
+              <h2>Hello <span></span></h2>
+              <div class="row-fluid ">
+                <div class="span10">
+                  <p>
+                    <label>Please enter your email address  <svg xmlns="http://www.w3.org/2000/svg" width="7" height="8" viewBox="0 0 7 8" fill="none">
+                      <path d="M1.00781 6.46875L2.57812 4.3125L0.21875 3.60938L0.585938 2.4375L2.94531 3.30469L2.875 0.617188H4.0625L3.98438 3.35156L6.3125 2.48438L6.67188 3.67969L4.27344 4.39062L5.8125 6.50781L4.84375 7.23438L3.39844 4.98438L1.98438 7.17969L1.00781 6.46875Z" fill="#9D2872"/>
+                      </svg></label>
+                    <input type="email" class="input-box email email-val" id="email-input" required>
+                    <span class="val-email">Please enter valid email address</span>
+                    <span class="req-email">Please enter required field</span>
+                  </p>
+                  <p>
+                    <label>Phone number <svg xmlns="http://www.w3.org/2000/svg" width="7" height="8" viewBox="0 0 7 8" fill="none">
+                      <path d="M1.00781 6.46875L2.57812 4.3125L0.21875 3.60938L0.585938 2.4375L2.94531 3.30469L2.875 0.617188H4.0625L3.98438 3.35156L6.3125 2.48438L6.67188 3.67969L4.27344 4.39062L5.8125 6.50781L4.84375 7.23438L3.39844 4.98438L1.98438 7.17969L1.00781 6.46875Z" fill="#9D2872"/>
+                      </svg></label>
+                    <input type="text" class="input-box phnumber" required>
+                    <span class="alert-mess-valid-ph">Please enter a valid phone number</span>
+                    <span class="alert-mess-valid-num">Please put valid mobile number</span>
+                    <span class="alert-mess-req-num">Please enter required field</span>
+                  </p>
+                  {#<div class="sleep-step3-checkbox">
+                  <label>
+                  <input type="checkbox" class="sleep-step3-checkboxinput" id="content1" name="contentNew"> 
+                  <span>Get a copy of your results, a healthy dose of relevant resources and toolkits designed to help you get better sleep and lead a more energetic life. 100% free.
+                  </span>
+                  </label>     
+                  </div>#}
+                </div>
+              </div>
+
+              <div class="next-button-outer">
+                <button class="next-button sleep-step3-submit">Submit</button>
+                <button class="next-button sleep-step3-next">Next</button>
+              </div> 
+            </div>
+          </div>
+          <div class="pagination"> 
+            <span class="prev1"></span> <span class="active">02</span> <span></span> <span></span>  <span></span> <span></span> <span></span>
+          </div>
+        </div>
+
+        <div class="sleep-steps step-inner-space sleep-step4">
+          <div aria-hidden="true" class="bg-circle__wrapper">
+            <div class="bg-circle"></div>
+          </div>
+
+          <div class="sleep-steps-inner"><div class="sleep-steps-inner1">
+            <h2>Your Body Mass Index (BMI) is?</h2>
+            <div class="sleep-step4-input">
+              <div><label>Height&nbsp; </label><input type="number" class="input-box height"><label>cm</label></div>
+              <div><label>Weight</label><input type="number" class="input-box weight"><label>kg</label></div>
+              <div class="bmiresults"></div>  
+            </div> 
+            <div class="next-button-outer">
+              <button class="next-button sleep-step4-next">Next</button>
+            </div>
+            </div>
+          </div>
+
+          <div class="pagination"> 
+            <span class="prev1"></span>  <span class="prev2"></span> <span class="active">03</span>  <span></span> <span></span> <span></span> <span></span>
+          </div>
+        </div>
+
+        <div class="sleep-steps step-inner-space sleep-step5">
+          <div aria-hidden="true" class="bg-circle__wrapper">
+            <div class="bg-circle"></div>
+          </div>
+
+          <div class="sleep-steps-inner">
+            <div class="sleep-steps-inner1">
+              <h2>Tell us your date of birth</h2>
+              <!--<p>We might just send you a gift.</p>-->
+              <div class="sleep-step5-outer">
+                <div class="row-fluid ">
+                  <div class="span3">
+                    <input type="text" id="datepicker" class="input-box daydate" placeholder="DD/MM/YYY" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+
+              <div class="next-button-outer">
+                <button class="next-button sleep-step5-next">Next</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pagination"> 
+            <span class="prev1"></span>  <span class="prev2"></span>  <span class="prev3"></span>  <span class="active">04</span> <span></span>  <span></span> <span></span>
+          </div>
+        </div> 
+
+        <div class="sleep-steps step-inner-space sleep-step6">
+          <div aria-hidden="true" class="bg-circle__wrapper">
+            <div class="bg-circle"></div>
+          </div>
+
+          <div class="sleep-steps-inner">
+            <div class="sleep-steps-inner1">
+              <h2>What is your neck circumference</h2>
+              <p>Tip: Use a soft measuring tape or a string with a knot on one end</p>
+              <div class="sleep-step6-input">
+                <input type="number" class="input-box neck"><label>cm</label>
+              </div>
+              <div class="next-button-outer">
+                <button class="next-button sleep-step6-next">Next</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pagination"> 
+            <span class="prev1"></span>  <span class="prev2"></span>  <span class="prev3"></span>  <span class="prev4"></span>  <span class="active">05</span>  <span></span> <span></span>
+          </div>
+        </div>
+
+        <!--<div class="sleep-steps sleep-step7">
+<div aria-hidden="true" class="bg-circle__wrapper">
+<div class="bg-circle"></div>
+</div>
+
+<h2>Please select your ethnic group</h2>        
+<div class="sleep-step7-input">
+<button class="">Chinese</button>
+<button class="">Malaya</button><br>
+<button class="">Indian </button>
+<button class="">Other</button>
+</div>  
+<div class="pagination"> 
+<span class="prev1"></span>  
+<span class="prev2"></span>  
+<span class="prev3"></span>  
+<span class="prev4"></span>   
+<span class="prev5"></span>
+<span class="active">06</span> 
+<span></span> 
+<span></span>
+</div>
+</div> --> 
+
+        <div class="sleep-steps step-inner-space sleep-step8">
+
+          <div aria-hidden="true" class="bg-circle__wrapper">
+            <div class="bg-circle"></div>
+          </div>
+
+          <div class="sleep-steps-inner">
+            <div class="sleep-steps-inner1">
+              <h2>What is your gender?</h2>        
+              <div class="sleep-step8-input">
+
+                <div class="row-fluid ">
+                  <div class="span6">
+                    <p>
+                      <label>
+                        <input type="radio" class="sleep-step8-male" name="gender_one" value="Male">
+                        <span>Male</span>
+                      </label>
+
+                    </p>
+
+
+                    <p>
+                      <label>
+                        <input class="sleep-step8-female" type="radio" name="gender_one" value="Female">
+                        <span>Female</span>
+                      </label>
+
+                    </p>
+                  </div>
+                </div>
+              </div> 
+            </div> 
+          </div>
+
+          <div class="pagination"> <span class="prev1"></span>  <span class="prev2"></span>  <span class="prev3"></span>  <span class="prev4"></span>   <span class="prev5"></span><span class="active">06</span> <span></span></div>
+
+
+        </div>
+
+        <div class="sleep-steps step-inner-space sleep-step9">
+          <div aria-hidden="true" class="bg-circle__wrapper">
+            <div class="bg-circle"></div>
+          </div>
+
+          <div class="sleep-steps-inner">
+            <div class="sleep-steps-inner1">
+              <h2>Do you snore?</h2>        
+              <div class="sleep-step9-input">
+                <div class="row-fluid ">
+                  <div class="span6">
+                    <label>
+                      <input type="radio" class="sleep-step9-yes" name="do_you_snore" value="Yes">
+                      <span>Yes</span>
+                    </label>
+
+                    <label>
+                      <input class="sleep-step9-no" type="radio" name="do_you_snore" value="No">
+                      <span>No</span>
+                    </label>
+                  </div>
+                </div>  
+              </div> 
+              <div class="next-button-outer">
+                <button class="next-button sleep-step9-next">Submit</button>
+              </div>
+            </div>
+          </div>   
+          <div class="pagination"> <span class="prev1"></span>  <span class="prev2"></span>  <span class="prev3"></span>  <span class="prev4"></span>   <span class="prev5"></span> <span class="prev6"></span> <span class="active">07</span></div>
+        </div>
+
+        <div class="sleep-steps step-inner-space result" style="text-align:center;">
+          <div aria-hidden="true" class="bg-circle__wrapper">
+            <div class="bg-circle"></div>
+          </div>
+
+          <div style="display:none">
+
+            <h2>Result</h2>        
+            <p class="totalscore"> </p>     
+            <p class="totalscore1"> </p>
+            <p class="totalscoreimage"> </p>
+          </div>
+        </div>
+
+      </div>  
+    </div> <!--sleep-assesment-outer0--->
+  </div> <!--Page Center--->
+</div> <!-- sleep-assesment-outer -->
+
+<div class="sleep-forms" style="display:none!important">
+  <div class="step1-form" >
+    <!--[if lte IE 8]>
+<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2-legacy.js"></script>
+<![endif]-->
+    <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2.js"></script>
+    <script>
+      $(document).ready(function(){
+
+        var country_from_URL = $(location).attr('hostname');
+        var country_from_URL_array = country_from_URL.split('.');
+        var parse_Country = country_from_URL_array[country_from_URL_array.length-1],Country_val;
+        console.log(parse_Country);
+
+        var dateISO;
+        var d = new Date();
+        d.setUTCHours(0,0,0,0);
+        dateISO = d.toISOString();
+        //console.log(Date.parse(dateISO));
+
+        if(parse_Country == 'vn'){
+          Country_val = 'Vietnam';
+          $("a.privacy_url").attr("href", "https://www.resmed.vn/en-vn/index/privacy");
+          $("a.tnc_url").attr("href", "https://www.resmed.vn/en-vn/index/terms-of-use");
+        }
+        else if(parse_Country == 'la'){
+          Country_val = 'Laos';
+          $("a.privacy_url").attr("href", "https://www.resmed.la/en-la/index/privacy");
+          $("a.tnc_url").attr("href", "https://www.resmed.la/en-la/index/terms-of-use");
+        }
+        else if(parse_Country == 'id'){
+          Country_val = 'Indonesia';
+          $("a.privacy_url").attr("href", "https://www.resmed.co.id/en-id/index/privacy");
+          $("a.tnc_url").attr("href", "https://www.resmed.co.id/en-id/index/terms-of-use");
+        }
+        else if(parse_Country == 'th'){
+          Country_val = 'Thailand';
+          $("a.privacy_url").attr("href", "https://www.resmed.co.th/en-th/index/privacy");
+          $("a.tnc_url").attr("href", "https://www.resmed.co.th/en-th/index/terms-of-use");
+        }
+        else if(parse_Country == 'kr'){
+          Country_val = 'Korea';
+          $("a.privacy_url").attr("href", "https://www.resmed.kr/en-kr/index/privacy");
+          $("a.tnc_url").attr("href", "https://www.resmed.kr/en-kr/index/terms-of-use");
+        }
+        else if(parse_Country == 'tw'){
+          Country_val = 'Taiwan';
+          $("a.privacy_url").attr("href", "https://www.resmed.tw/zh-tw/index/privacy");
+          $("a.tnc_url").attr("href", "https://www.resmed.tw/zh-tw/index/terms-of-use");
+        }
+        else if(parse_Country == 'hk'){
+          Country_val = 'Hong Kong';
+          $("a.privacy_url").attr("href", "https://www.resmed.hk/en-hk/index/privacy");
+          $("a.tnc_url").attr("href", "https://www.resmed.hk/en-hk/index/terms-of-use");
+        }
+        else if(parse_Country == 'asia'){
+          Country_val = $('.countrydropdown').val();
+        }
+        else if(parse_Country == 'my'){
+          Country_val = 'Malaysia';
+          $("a.privacy_url").attr("href", "https://www.resmed.my/en-my/index/privacy");
+          $("a.tnc_url").attr("href", "https://www.resmed.my/en-my/index/terms-of-use");
+        }
+        else if(parse_Country == 'ph'){
+          Country_val = 'Philippines';
+          $("a.privacy_url").attr("href", "https://www.resmed.ph/en-ph/index/privacy");
+          $("a.tnc_url").attr("href", "https://www.resmed.ph/en-ph/index/terms-of-use");
+        }
+        else if(parse_Country == 'sg'){
+          Country_val = 'Singapore';
+        }
+        hbspt.forms.create({
+          portalId: "3445757",
+          formId: "64845c35-616b-4ac8-9d7a-1383d47cafb6",
+          onFormSubmit: function($form) {
+            console.log("formSubmited");
+            $(".step1-form .hs_firstname input").val($(".firstname").val()).change();
+            $(".step1-form .hs_lastname input").val($(".surname").val()).change();
+            $(".step1-form .hs_email input").val($(".email").val()).change();
+            $(".step1-form .hs_country select").val(Country_val).change();
+            $(".step1-form .hs_sleep_well_nosas_contact_creation_date input").val(Date.parse(dateISO)).change();
+          } 
+        });
+      });
+    </script>
+  </div></div>
+
+<div class="sleep-forms" style="display:none!important">
+  <div class="step2-form" >
+    <!--[if lte IE 8]>
+<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2-legacy.js"></script>
+<![endif]-->
+    <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2.js"></script>
+    <script>
+
+      function formv3(){
+        //gtag("event","submit",{event_category:"quiz",event_label:"sleep-assessment quiz submission"});
+        var currentURL = window.location.href; 
+        var currentPageTitle = $(document).find("title").text();
+        var name1 = $(".firstname").val();
+        var email = $(".email").val();
+        var surename = $(".surname").val();
+        //var results = $(".bmiresults").val();
+        var phno = $(".sleep-step3 p input.phnumber").val();
+        var height = $(".height").val(); 
+        var weight = $(".weight").val();
+        var daydate = $(".daydate").val();
+        var gender = $(".sleep-step8-input .active").val();
+        var neck = $(".neck").val();
+        var snore = $(".sleep-step9-input .active").val(); 
+        var score = $(".totalscore").text();
+        var rsult = $(".totalscore1").text();
+
+        console.log(name1,email,surename,height,weight,daydate,gender,neck,snore,phno,score,rsult);
+
+        var getUrlParameter = function getUrlParameter(sParam) {
+          var sPageURL = window.location.search.substring(1),
+              sURLVariables = sPageURL.split('&'),
+              sParameterName,
+              i;
+
+          for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+              return typeof sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+            }
+          }
+          return false;
+        };
+
+        var urlRef;
+        var tech = getUrlParameter('ref');
+        var partnerName = getUrlParameter('utm_term');
+
+        if(tech) {
+          urlRef = tech;
+        } else {
+          urlRef = '';
+        }
+
+        // Create the new request 
+        var xhr = new XMLHttpRequest(); 
+        var url = 'https://api.hsforms.com/submissions/v3/integration/submit/3445757/{{ module.form_id }}'
+
+        // Example request JSON:
+        var data = {
+          "fields": [
+            {
+              "name": "email",
+              "value": email
+            },
+            {
+              "name": "firstname",
+              "value": name1
+            },
+            {
+              "name": "lastname",
+              "value": surename
+            },
+            {
+              "name": "gender_one",
+              "value": gender
+            },
+            {
+              "name": "what_is_your_height_in_cms",
+              "value": height
+            },
+            {
+              "name": "what_is_your_weight_in_kgs",
+              "value": weight
+            },
+            {
+              "name": "what_is_your_neck_circumference",
+              "value": neck
+            },
+            {
+              "name": "date_of_birth",
+              "value": daydate
+            },
+            {
+              "name": "do_you_snore",
+              "value": snore
+            },
+            {
+              "name": "phone",
+              "value": phno
+            },
+            {
+              "name": "score",
+              "value": score
+            },
+            {
+              "name": "result",
+              "value": rsult
+            },
+            {
+              "name":"sleep_assessment_status",
+              "value":"True"
+            },
+            {
+              "name": "leadsource",
+              "value": urlRef
+            },
+            {
+              "name": "partner_name",
+              "value": partnerName
+            },
+            {
+              "name": "page_link",
+              "value": currentURL
+            }
+
+              ],
+              "context": {
+              "hutk": document.cookie.replace(/(?:(?:^|.*;\s*)hubspotutk\s*\=\s*([^;]*).*$)|^.*$/, "$1"),
+              "pageUri": currentURL,
+              "pageName": currentPageTitle
+            },
+            "legalConsentOptions":{ // Include this object when GDPR options are enabled
+            "consent":{ 
+            "consentToProcess":true,
+            "text":"I agree to allow Example Company to store and process my personal data.",
+            "communications":[
+            { 
+            "value":true,
+            "subscriptionTypeId":999,
+            "text":"RESMED"
+            }
+          ]
+        }
+        }
+      }
+
+
+
+
+      var final_data = JSON.stringify(data)
+
+      xhr.open('POST', url);
+      // Sets the value of the 'Content-Type' HTTP request headers to 'application/json'
+      xhr.setRequestHeader('Content-Type', 'application/json');
+
+      xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4 && xhr.status == 200) { 
+          console.log(xhr.responseText); // Returns a 200 response if the submission is successful.
+        } else if (xhr.readyState == 4 && xhr.status == 400){
+          console.log(xhr.responseText); // Returns a 400 error the submission is rejected.          
+        } else if (xhr.readyState == 4 && xhr.status == 403){ 
+          console.log(xhr.responseText); // Returns a 403 error if the portal isn't allowed to post submissions.           
+        } else if (xhr.readyState == 4 && xhr.status == 404){
+          console.log(xhr.responseText); //Returns a 404 error if the formGuid isn't found     
+        }
+        console.log(xhr.responseText)
+      }
+
+
+      // Sends the request 
+      console.log(final_data);
+      xhr.send(final_data)
+      }
+
+
+
+    </script>
+
+
+  </div> 
+
+</div>
+
+
+<script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js">
+</script>
+
+<script>
+
+  $( document ).ready(function() {
+
+    var $viewportMeta = $('meta[name="viewport"]');
+    $('input, select, textarea').bind('focus blur', function(event) {
+      $viewportMeta.attr('content', 'width=device-width,initial-scale=1,maximum-scale=' +        (event.type == 'blur' ? 10 : 1));
+    });
+
+
+
+
+
+    $(".sleep-steps").hide();
+    $(".sleep-step0").show( "slide", {direction: "right" }, 1000 );   
+    var score=0;
+    var bmiscore=0;
+    var agescore = 0;
+    var neckscore = 0;
+    var genderscore = 0;
+    var snorescore = 0;
+
+    var d = new Date();
+    var year = d.getFullYear();
+    year = year - 21;  
+
+    $(function() {
+      $("#datepicker").datepicker({  
+        changeYear: true,
+        changeMonth: true,
+        showButtonPanel: true, 
+        yearRange: "-90:"+year ,
+        onSelect: function(dateText, inst) {
+          $(".sleep-step5-next").show();
+          var date = $('.daydate').datepicker( "getDate" ).split("/"); 
+          var day = date[0];
+          var month = date[1];
+          var year = date[2];
+          alert(year,month,day);
+          var age = showAge(year,month,day);
+          if(age >= 55)
+          {
+            agescore = 4;
+          }
+        }
+      }); 
+    });  
+
+
+
+
+    $( ".prev1" ).click(function() {
+      $(".sleep-steps").hide();
+      $(".sleep-step2").show( "slide", {direction: "left" }, 1000 );
+    });
+
+    $( ".prev2" ).click(function() {
+      $(".sleep-steps").hide();
+      $(".sleep-step3").show( "slide", {direction: "left" }, 1000 );
+    });
+
+    $( ".prev3" ).click(function() {
+      $(".sleep-steps").hide();
+      $(".sleep-step4").show( "slide", {direction: "left" }, 1000 );
+    });
+
+    $( ".prev4" ).click(function() {
+      $(".sleep-steps").hide();
+      $(".sleep-step5").show( "slide", {direction: "left" }, 1000 );
+    });
+
+    $( ".prev5" ).click(function() {
+      $(".sleep-steps").hide();
+      $(".sleep-step6").show( "slide", {direction: "left" }, 1000 );
+    });
+
+    $( ".prev6" ).click(function() {
+      $(".sleep-steps").hide();
+      $(".sleep-step8").show( "slide", {direction: "left" }, 1000 );
+    }); 
+
+    $( "#proceed_btn" ).click(function() {
+      $(".sleep-steps").hide();
+      $(".sleep-step2").show( "slide", {direction: "right" }, 1000 );
+    });
+
+    /*****Initial Step validation***/
+    // $(".sleep-step0 input" ).click(function() {
+    //$( ".sleep-step0 a").toggle();
+    //  $("#proceed_btn").toggle();
+    //});
+
+    $( ".sleep-step1 a" ).click(function() {
+      $(".sleep-steps").hide();
+      $(".sleep-step2").show( "slide", {direction: "right" }, 1000 );
+    });
+
+    $('.firstname,.surname').on('input',function(e){
+      if(!$(".firstname").val().length == 0 && !$(".surname").val().length == 0)
+      {
+        $(".sleep-step2-next").show();
+      }
+      else
+      {
+        $(".sleep-step2-next").show();
+      }
+    });
+
+    var phnumber=0;
+    $(".phnumber").on('input',function(e){
+      if(!$(".phnumber").val().length == 0){ 
+        //$('.email').attr("disabled",true); 
+        //$(".sleep-step3-next").show();
+        $(".sleep-step3-submit").show();
+        //phnumber=1;
+        $('.email').removeClass("disable");
+        //$('.email').addClass("disable");
+      }
+      if($(".phnumber").val().length == 0){
+        $('.email').attr("disabled",false);
+        $('.email').removeClass("disable");
+      }
+    });
+
+    $('.phnumber').keydown(function(){
+      if(!$(".phnumber").val().length == 0){ 
+        //$('.email').attr("disabled",true); 
+        //$(".sleep-step3-next").show();
+        $(".sleep-step3-submit").show();
+        //phnumber=1; 
+        $('.email').removeClass("disable");
+        //$('.email').addClass("disable");
+      }
+      if($(".phnumber").val().length == 0){
+        $('.email').attr("disabled",false);
+        $('.email').removeClass("disable");
+      }
+    });
+
+
+
+
+
+    var emailtrue=0; 
+
+
+    $('.email').keydown(function(){
+      setTimeout(function(){ 
+        if(!$(".email").val().length == 0){
+          //$('.phnumber').attr("disabled",true);
+          $('.phnumber').removeClass("disable");
+          //$('.phnumber').addClass("disable");
+        }
+        if($(".email").val().length == 0){
+          $('.phnumber').attr("disabled",false);
+          $('.phnumber').removeClass("disable");
+        }
+      }, 500);
+    }); 
+
+    $('.email').keypress(function(){
+      if(!$(".email").val().length == 0){
+        //$('.phnumber').attr("disabled",true);     
+        $('.phnumber').removeClass("disable");
+        //$('.phnumber').addClass("disable");
+      }
+      if($(".email").val().length == 0){
+        $('.phnumber').attr("disabled",false);
+        $('.phnumber').removeClass("disable");
+      }
+      emailtrue=0;
+      if($(this).val() == '' || $(this).val() === 'null' || $(this).val() === 'undefined'){
+        emailtrue=0;
+      } else {
+        emailtrue=1;
+        if(emailtrue == 1) {
+          //$(".sleep-step3-next").show(); 
+          $(".sleep-step3-submit").show();
+        }else
+        {
+          //$(".sleep-step3-next").hide();
+          $(".sleep-step3-submit").hide();
+        }
+      }
+    });
+
+    $(".sleep-step3-checkboxinput").change(function() {
+      if(this.checked && emailtrue == 1) {
+        //$(".sleep-step3-next").show();
+      }
+      else
+      {
+        //$(".sleep-step3-next").hide();
+      }
+    });
+
+    $('.height,.weight').on('input',function(e){
+      bmiscore=0;
+      if(!$(".height").val().length == 0 && !$(".weight").val().length == 0)
+      {
+        $(".sleep-step4-next").show();
+        var height = $(".height").val();
+        var weight = $(".weight").val();
+        height = height/100 ;
+        var bmi = weight / (height * height) ;
+        bmi = bmi.toFixed(2);
+        $(".bmiresults").empty();
+        if(bmi <= 18.5 )
+        {  
+          $(".bmiresults").append("<h2>"+bmi+"</h2><p>which is underweight.</p>")
+          bmiscore=0;
+        }
+        else if(bmi >= 18.6 && bmi <= 24.9)
+        {
+          $(".bmiresults").append("<h2>"+bmi+"</h2><p>which is Normal.</p>")
+          bmiscore=0;
+        }
+        else if(bmi >= 25.0 && bmi <= 29.9)
+        {
+          $(".bmiresults").append("<h2>"+bmi+"</h2><p>which is overweight.</p>")
+          bmiscore=3;
+        }
+        else if(bmi >= 30.0)
+        {
+          $(".bmiresults").append("<h2>"+bmi+"</h2><p>which is obese.</p>")
+          bmiscore=5;
+        }
+      }
+      else
+      {
+        $(".sleep-step4-next").hide();
+      }
+    });
+
+
+
+    $('.daydate').on('click',function(e){
+      agescore = 0;
+
+      if(!$('.daydate').datepicker( "getDate" ).length == 0)  
+      {
+        $(".sleep-step5-next").show();
+        var date = $('.daydate').datepicker( "getDate" ).split("/"); 
+        var day = date[0];
+        var month = date[1];
+        var year = date[2];
+        alert(year,month,day);
+        var age = showAge(year,month,day);
+        if(age >= 55)
+        {
+          agescore = 4;
+        }
+      }
+      else
+      {
+        //$(".sleep-step5-next").hide();
+      }
+    });
+
+    $('.daydate').keyup(function(){
+      var temp = $(this).val();
+      if(temp.length > 0){
+        $(".sleep-step5-next").show();
+      }
+    });
+    $('.neck').on('input',function(e){
+      if(!$(".neck").val().length == 0 )
+      {
+        $(".sleep-step6-next").show();
+        if($(".neck").val() > 40 )
+        {
+          neckscore = 4;
+        }
+      }
+      else
+      {
+        $(".sleep-step6-next").hide();
+      }
+    });
+
+    /*function validateEmail($email) {
+  var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+  return emailReg.test( $email );
+}*/
+
+    function showAge(dobYear, dobMonth, dobDay) {
+      var bthDate, curDate, days;
+      var ageYears, ageMonths, ageDays;
+      bthDate = new Date(dobYear, dobMonth-1, dobDay);
+      curDate = new Date();
+      if (bthDate > curDate) return;
+      ageYears = curDate.getFullYear() - bthDate.getFullYear();
+      ageMonths = curDate.getMonth() - bthDate.getMonth();
+      ageDays = curDate.getDate() - bthDate.getDate(); 
+      if (ageDays < 0) {
+        ageMonths = ageMonths - 1;
+        ageDays = ageDays + 31;
+      }
+      ageWeeks = Math.ceil(ageDays / 7);
+      if (ageMonths < 0) {
+        ageYears = ageYears - 1;
+        ageMonths = ageMonths + 12;
+      }
+      ageText = "";
+      if (ageYears > 0) {
+        ageText = ageText + ageYears 
+        if (ageYears > 1) ageText = ageText; 
+      }
+
+      return(ageText);
+
+    }  
+
+
+
+
+    $( ".sleep-step2-next" ).click(function() {
+      $(".sleep-step2").hide();
+      $(".sleep-step3").show( "slide", {direction: "right" }, 1000 );
+      $(".sleep-step3 h2 span").append($(".firstname").val());
+    });
+
+    $(".phnumber").keypress(function (e) {
+      if(e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+        return false;
+      }
+    });
+
+    $("#email-input").keyup(function(){
+      //$('.sleep-step3-next').show();
+      $(".sleep-step3-submit").show();
+    });
+
+    $(".phnumber").keyup(function(){
+      //$('.sleep-step3-next').show();
+      $(".sleep-step3-submit").show();
+    });
+
+    $( ".sleep-step3-submit" ).click(function() {
+
+      var phemail = $(".phnumber").val();
+      var emailIp = $(".email-val").val();
+      var filter_mob = /^\d*(?:\.\d{1,2})?$/;
+      var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+
+      if(filter_mob.test(phemail)) {
+        if((phemail.length>=7) && (phemail.length<=15)) {
+          phnumber = 1;
+          $('span.alert-mess-req-num').hide();
+          $('span.alert-mess-valid-ph').hide();
+        } else {
+          phnumber = 0;
+          $('span.alert-mess-valid-ph').show();
+        }
+      }
+
+      var country_from_URL = $(location).attr('hostname');
+      var country_from_URL_array = country_from_URL.split('.');
+      var parse_Country = country_from_URL_array[country_from_URL_array.length-1],Country_val;
+      console.log(parse_Country);
+      if(parse_Country == 'tw'){
+        if(filter_mob.test(phemail)) {
+          if((phemail.length<=15)) {
+            phnumber = 1;
+            $('span.alert-mess-req-num').hide();
+            $('span.alert-mess-valid-ph').hide();
+          } else {
+            phnumber = 0;
+            $('span.alert-mess-valid-ph').show();
+          }
+
+          if(phemail == '') {
+            phnumber = 0;
+            $('span.alert-mess-valid-ph').show();
+          } else {
+            phnumber = 1;
+          }
+        }
+      }
+
+      if(!filter.test(emailIp)){
+        console.log(emailIp + ' - invalid email format');
+        emailtrue = 0;
+        $('.sleep-steps-inner1 p span.req-email').hide();
+        $('.sleep-steps-inner1 p span.val-email').show();
+        return false;
+      } else {
+        $('.sleep-steps-inner1 p span.val-email').hide();
+      }
+
+      if(emailIp == '') {
+        emailtrue = 0;
+        $('.sleep-steps-inner1 p span.val-email').hide();
+        $('.sleep-steps-inner1 p span.req-email').show();
+        //       $(".sleep-step3").show();
+        //       $(".sleep-step4").hide();
+      } else {
+        console.log(emailIp + " set to 1");
+        emailtrue = 1;
+      }
+
+      if(phemail == '') {
+        phnumber = 0;
+        $('span.alert-mess-req-num').show();
+        //         $(".sleep-step3").show();
+        //         $(".sleep-step4").hide();
+        $('span.alert-mess-valid-ph').hide();
+      } 
+
+      /*if(phemail.charAt(0) == "0") {
+      console.log('chatAt(0) == zero');
+      phnumber = 0;
+      $('span.alert-mess-req-num').hide();
+      $('span.alert-mess-valid-num').show();
+    }*/
+
+      console.log('phnumber == ' + phnumber);
+      console.log('emailtrue == ' + emailtrue);
+
+      if((phnumber == 1) && (emailtrue == 1)) {
+        emailtrue = 1;
+        phnumber = 1;
+        $('.sleep-steps-inner1 p span.val-email').hide();
+        $('.sleep-steps-inner1 p span.req-email').hide();
+        $('span.alert-mess-req-num').hide();
+        //         $(".sleep-step3").hide();
+        //         $(".sleep-step4").show( "slide", {direction: "right" }, 1000 );
+      }
+
+      $(".step1-form .hs_firstname input").val($(".firstname").val()).change();
+      $(".step1-form .hs_lastname input").val($(".surname").val()).change();
+      $(".step1-form .hs_email input").val($(".email").val()).change(); 
+
+      $(".step2-form .hs_firstname input").val($(".firstname").val()).change();
+      $(".step2-form .hs_lastname input").val($(".surname").val()).change();
+      $(".step2-form .hs_email input").val($(".email").val()).change(); 
+
+      $(".step1-form .hs-button").click();
+      $('.sleep-step3-next').show();
+      $(this).hide();
+    });
+
+    $( ".sleep-step3-next" ).click(function() {
+
+      var phemail = $(".phnumber").val();
+      var emailIp = $(".email-val").val();
+      var filter_mob = /^\d*(?:\.\d{1,2})?$/;
+      var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+
+      if(filter_mob.test(phemail)) {
+        if((phemail.length>=7) && (phemail.length<=15)) {
+          phnumber = 1;
+          $('span.alert-mess-req-num').hide();
+          $('span.alert-mess-valid-ph').hide();
+        } else {
+          phnumber = 0;
+          $('span.alert-mess-valid-ph').show();
+        }
+      }
+
+      var country_from_URL = $(location).attr('hostname');
+      var country_from_URL_array = country_from_URL.split('.');
+      var parse_Country = country_from_URL_array[country_from_URL_array.length-1],Country_val;
+      console.log(parse_Country);
+      if(parse_Country == 'tw'){
+        if(filter_mob.test(phemail)) {
+          if((phemail.length<=15)) {
+            phnumber = 1;
+            $('span.alert-mess-req-num').hide();
+            $('span.alert-mess-valid-ph').hide();
+          } else {
+            phnumber = 0;
+            $('span.alert-mess-valid-ph').show();
+          }
+
+          if(phemail == '') {
+            phnumber = 0;
+            $('span.alert-mess-valid-ph').show();
+          } else {
+            phnumber = 1;
+          }
+        }
+      }
+
+      if(!filter.test(emailIp)){
+        console.log(emailIp + ' - invalid email format');
+        emailtrue = 0;
+        $('.sleep-steps-inner1 p span.req-email').hide();
+        $('.sleep-steps-inner1 p span.val-email').show();
+        return false;
+      } else {
+        $('.sleep-steps-inner1 p span.val-email').hide();
+      }
+
+      if(emailIp == '') {
+        emailtrue = 0;
+        $('.sleep-steps-inner1 p span.val-email').hide();
+        $('.sleep-steps-inner1 p span.req-email').show();
+        $(".sleep-step3").show();
+        $(".sleep-step4").hide();
+      } else {
+        console.log(emailIp + " set to 1");
+        emailtrue = 1;
+      }
+
+      if(phemail == '') {
+        phnumber = 0;
+        $('span.alert-mess-req-num').show();
+        $(".sleep-step3").show();
+        $(".sleep-step4").hide();
+        $('span.alert-mess-valid-ph').hide();
+      } 
+
+      console.log('phnumber == ' + phnumber);
+      console.log('emailtrue == ' + emailtrue);
+
+      if((phnumber == 1) && (emailtrue == 1)) {
+        emailtrue = 1;
+        phnumber = 1;
+        $('.sleep-steps-inner1 p span.val-email').hide();
+        $('.sleep-steps-inner1 p span.req-email').hide();
+        $('span.alert-mess-req-num').hide();
+        $(".sleep-step3").hide();
+        $(".sleep-step4").show( "slide", {direction: "right" }, 1000 );
+      }
+    });
+
+    $( ".sleep-step4-next" ).click(function() {
+      $(".sleep-step4").hide();
+      $(".sleep-step5").show( "slide", {direction: "right" }, 1000 );
+    });
+
+    $( ".sleep-step5-next" ).click(function() {
+      $(".sleep-step5").hide();
+      $(".sleep-step6").show( "slide", {direction: "right" }, 1000 );
+    });
+
+    $( ".sleep-step6-next" ).click(function() {
+      $(".sleep-step6").hide();
+      $(".sleep-step8").show( "slide", {direction: "right" }, 1000 );
+    });
+
+    $( ".sleep-step7-input button" ).click(function() {
+      $(this).addClass("active");
+      $(".sleep-step7").hide();
+      $(".sleep-step8").show( "slide", {direction: "right" }, 1000 );
+    });
+
+
+    $( ".sleep-step8-input input" ).click(function() {
+      $(this).addClass("active").siblings('input').removeClass("active");
+      console.log($(this).val());
+      if($(this).val()=="Male")
+      {
+        genderscore = 2;
+      }
+      $(".sleep-step8").hide();
+      $(".sleep-step9").show( "slide", {direction: "right" }, 1000 );
+    });
+
+    $( ".sleep-step9-input input" ).click(function() {
+      $(this).addClass("active").siblings('input').removeClass("active");
+      console.log($(this).val());
+      if($(this).val()=="Yes")
+      {
+        snorescore = 2;
+      }
+      $('.sleep-step9-next').show();
+    });
+
+    $('.sleep-step9-next').click(function() {
+
+      score = bmiscore + agescore + neckscore + genderscore + snorescore;
+      console.log(score);
+
+      $(".sleep-step9").hide();
+
+      $(".totalscore").append(score);
+      if(score >= 8){
+
+        $(".totalscore1").append("Positive");
+        $(".totalscoreimage").append("<img src='https://cdn2.hubspot.net/hubfs/3445757/FINAL-HR.2.gif'>");
+        formv3();
+        setInterval(function () {
+          window.location.href="{{ module.high_score_url }}";
+        },3000);
+
+      } else { 
+
+        $(".totalscore1").append("Negative");
+        $(".totalscore1").append("<img src='https://cdn2.hubspot.net/hubfs/3445757/FINAL-LR.2.gif'>");
+        formv3(); 
+        setInterval(function () { 
+          window.location.href="{{ module.low_score_url }}";
+        },3000);
+
+      }
+      $(".step2-form .hs-button").click();
+    });
+
+
+  });
+
+</script> 
+
+
+<script src="https://kit.fontawesome.com/604343f4f4.js" crossorigin="anonymous"></script>
+
+<style>
+  .sleep-steps h2,
+  .sleep-steps.sleep-step0 p,
+  .logo-top span{
+    Color: rgba({{ module.style.section_text_color.color | convert_rgb }}, {{ module.style.section_text_color.opacity/100 }} ) !important;
+  }
+
+  .content-layer,.step-inner-space .sleep-steps-inner{   
+    background-color: rgba({{ module.style.section_background_color.color | convert_rgb }}, {{ module.style.section_background_color.opacity/100 }} );
+  } 
+  /*   checkbox border color */
+  .inner-below-content label input[type=checkbox]:before{
+    border:2px solid {{ module.style.brand_border_a_button_bg_color.color }};
+  }
+  /*lets begin button bg color  */
+  .proceed_btn a {
+    background:{{ module.style.brand_border_a_button_bg_color.css }};
+  }
+  .next-button{
+    border: 2px solid {{ module.style.brand_border_a_button_bg_color.color }};
+    background: {{ module.style.brand_border_a_button_bg_color.css }};
+  }
+  /*lets begin button hover colors  */
+  .sleep-steps-inner0 a:hover{
+    border: 1px solid {{ module.style.brand_border_a_button_bg_color.color }};
+    color: {{ module.style.brand_border_a_button_bg_color.color }};
+  }
+  /*anger tag colors */
+  .inner-btn-content p a, body .inner-below-content span a,.popup-content-col p a{
+    color:{{ module.style.brand_border_a_button_bg_color.color }};
+  }
+  /*anger tag hover colors*/
+  .inner-btn-content p a:hover, body .inner-below-content span a:hover{
+    border: 0px solid {{ module.style.brand_border_a_button_bg_color.color }} !important;
+    color: {{ module.style.brand_border_a_button_bg_color.color }};
+  }
+  /*   arrow color */
+  .sleep-steps-inner0 a:hover path{
+    fill: {{ module.style.brand_border_a_button_bg_color.color }};
+  }
+  .popup_close .fa-times-circle:before {
+    background-color:{{ module.style.brand_border_a_button_bg_color.css }};
+  }
+  /*   dots color */
+  .pagination span.active,.pagination span{
+    background: {{ module.style.brand_border_a_button_bg_color.css }};
+  }
+  /*  star */
+  .span10 svg path {
+    fill: {{ module.style.brand_border_a_button_bg_color.color }} !important;
+  }
+</style>    
